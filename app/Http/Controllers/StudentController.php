@@ -65,7 +65,7 @@ class StudentController extends Controller
 
         if ($user->role === 'administration') {
             $validated = $request->validate([
-                'name' => 'required|string|max:255',
+                'name' => 'required|string|max:255|unique:students,name',
                 'gender' => 'required|in:F,M',
                 'class_id' => 'required|exists:classes,id',
                 'major' => 'required|in:' . implode(',', array_keys($majorsMap)),
@@ -99,7 +99,7 @@ class StudentController extends Controller
         }
 
         $validated = $request->validate([
-            'name' => 'required|string|max:255',
+            'name' => 'required|string|max:255|unique:students,name',
             'gender' => 'required|in:F,M',
         ]);
 
@@ -151,7 +151,7 @@ class StudentController extends Controller
         // Jika admin, izinkan edit nama, gender, major, dan class_id
         if ($user->role === 'administration') {
             $validated = $request->validate([
-                'name' => 'required|string|max:255',
+                'name' => 'required|string|max:255|unique:students,name',
                 'gender' => 'required|in:F,M',
                 'major' => 'required|in:TKJ,TKR,AK,AP',
                 'class_id' => 'required|exists:classes,id',
@@ -194,7 +194,7 @@ class StudentController extends Controller
             }
 
             $validated = $request->validate([
-                'name' => 'required|string|max:255',
+                'name' => 'required|string|max:255|unique:students,name',
                 'gender' => 'required|in:F,M',
             ]);
 
