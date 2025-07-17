@@ -40,7 +40,8 @@
                             </thead>
                             <tbody>
                                 @for($i = 0; $i < $students->count(); $i++)
-                                    @for($j = $i + 1; $j < $students->count(); $j++)
+                                    @for($j = 0; $j < $students->count(); $j++)
+                                        @if($i !== $j) <!-- Pastikan siswa yang sama tidak dibandingkan -->
                                         @php
                                         $studentA = $students[$i]['student'];
                                         $studentB = $students[$j]['student'];
@@ -57,6 +58,7 @@
                                             <td class="text-center">{{ number_format($value, 2) }}</td>
                                             @endforeach
                                         </tr>
+                                        @endif
                                         @endfor
                                         @endfor
                             </tbody>

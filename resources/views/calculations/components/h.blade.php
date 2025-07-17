@@ -46,8 +46,8 @@
                             <tbody>
                                 @foreach($studentIds as $idA)
                                 @foreach($studentIds as $idB)
-                                @if($idA < $idB)
-                                    <tr>
+                                @if($idA !== $idB) <!-- Pastikan siswa yang sama tidak dibandingkan -->
+                                <tr>
                                     <td>{{ $studentNames[$idA] }}</td>
                                     <td>{{ $studentNames[$idB] }}</td>
                                     @foreach($criteriaNames as $criterionId => $criterionName)
@@ -55,10 +55,10 @@
                                         {{ number_format($hMatrix[$idA][$idB][$criterionId] ?? 0, 2) }}
                                     </td>
                                     @endforeach
-                                    </tr>
-                                    @endif
-                                    @endforeach
-                                    @endforeach
+                                </tr>
+                                @endif
+                                @endforeach
+                                @endforeach
                             </tbody>
                         </table>
                     </div>
