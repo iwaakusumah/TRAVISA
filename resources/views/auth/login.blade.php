@@ -23,20 +23,20 @@
                                     <label for="email">Email</label>
                                     <input id="email" type="email" class="form-control" name="email" required autofocus tabindex="1">
                                     <div class="invalid-feedback">
-                                        Please fill in your email
+                                        Silahkan masukan email anda
                                     </div>
                                 </div>
 
                                 <div class="form-group">
                                     <div class="d-block">
                                         <label for="password" class="control-label">Password</label>
-                                        <div class="float-right">
+                                        <!-- <div class="float-right">
                                             <a href="{{ route('password.request') }}" class="text-small">Forgot Password?</a>
-                                        </div>
+                                        </div> -->
                                     </div>
                                     <input id="password" type="password" class="form-control" name="password" required tabindex="2">
                                     <div class="invalid-feedback">
-                                        Please fill in your password
+                                        Silahkan masukan password anda
                                     </div>
                                 </div>
 
