@@ -35,7 +35,7 @@ class UserController extends Controller
     {
         // Validasi input
         $validated = $request->validate([
-            'name' => 'required|string|max:255',
+            'name' => 'required|string|max:255|unique:users,name',
             'email' => 'required|string|email|max:255|unique:users',
             'password' => 'required|string|min:8|confirmed',
             'school_class_id' => 'required|exists:school_classes,id',  // Validasi ID kelas
@@ -77,7 +77,7 @@ class UserController extends Controller
     {
         // Validasi input
         $validated = $request->validate([
-            'name' => 'required|string|max:255',
+            'name' => 'required|string|max:255|unique:users,name',
             'email' => 'required|string|email|max:255|unique:users,email,' . $user->id,
             'password' => 'nullable|string|min:8|confirmed',
             'school_class_id' => 'required|exists:school_classes,id',  // Validasi ID kelas
