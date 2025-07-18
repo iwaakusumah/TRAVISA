@@ -37,7 +37,7 @@ $rolePrefix = $user->role === 'administration' ? 'administration' : 'homeroom-te
                                     @error('name') <small class="text-danger">{{ $message }}</small> @enderror
                                 </div>
 
-                                <div class="form-group col-md-6">
+                                <div class="form-group col-md-3">
                                     <label for="gender">Jenis Kelamin</label>
                                     <select id="gender" name="gender" class="form-control" required>
                                         <option value="" disabled selected>-- Pilih Jenis Kelamin --</option>
@@ -46,11 +46,8 @@ $rolePrefix = $user->role === 'administration' ? 'administration' : 'homeroom-te
                                     </select>
                                     @error('gender') <small class="text-danger">{{ $message }}</small> @enderror
                                 </div>
-                            </div>
-
-                            @if($user->role === 'administration')
-                            <div class="form-row">
-                                <div class="form-group col-md-6">
+                                @if($user->role === 'administration')
+                                <div class="form-group col-md-3">
                                     <label for="class_id">Kelas</label>
                                     <select name="class_id" id="class_id" class="form-control" required>
                                         <option value="" disabled selected>-- Pilih Kelas --</option>
@@ -60,17 +57,6 @@ $rolePrefix = $user->role === 'administration' ? 'administration' : 'homeroom-te
                                         </option>
                                         @endforeach
                                     </select>
-                                </div>
-
-                                <div class="form-group col-md-6">
-                                    <label for="major">Jurusan</label>
-                                    <select name="major" id="major" class="form-control" required>
-                                        <option value="" disabled selected>-- Pilih Jurusan --</option>
-                                        @foreach ($majors as $fullName => $abbr)
-                                        <option value="{{ $abbr }}" {{ old('major') == $abbr ? 'selected' : '' }}>{{ $fullName }}</option>
-                                        @endforeach
-                                    </select>
-
                                 </div>
                             </div>
                             @endif

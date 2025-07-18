@@ -18,38 +18,37 @@ class ScoreController extends Controller
     {
         $user = Auth::user();
 
-        if (!$user || (!$user->class_id && $user->role !== 'administration')) {
+        if (!$user || !$user->class_id || $user->role === 'administration') {
             abort(403, 'Anda tidak memiliki akses.');
         }
 
-        $students = $user->role === 'administration'
-            ? Student::pluck('id') // Semua siswa
-            : Student::where('class_id', $user->class_id)->pluck('id');
+        $students = Student::where('class_id', $user->class_id)->pluck('id');
 
         $scores = Score::with(['student', 'criteria', 'period'])
             ->whereIn('student_id', $students)
             ->get();
 
-        $class = $user->role === 'administration' ? null : SchoolClass::find($user->class_id);
-
+        $class = SchoolClass::find($user->class_id);
         $criteria = Criteria::all();
 
         return view('scores.index', compact('scores', 'class', 'criteria'));
     }
 
+    // Menampilkan detail nilai siswa (via JSON)
     public function show($student_id)
     {
         $user = Auth::user();
 
-        $query = Score::with(['criteria', 'period', 'student'])->where('student_id', $student_id);
-
-        if ($user->role !== 'administration') {
-            $query->whereHas('student', function ($q) use ($user) {
-                $q->where('class_id', $user->class_id);
-            });
+        if ($user->role === 'administration') {
+            abort(403, 'Anda tidak memiliki akses.');
         }
 
-        $scores = $query->get();
+        $scores = Score::with(['criteria', 'period', 'student'])
+            ->where('student_id', $student_id)
+            ->whereHas('student', function ($q) use ($user) {
+                $q->where('class_id', $user->class_id);
+            })
+            ->get();
 
         if ($scores->isEmpty()) {
             return response()->json(['error' => 'Data tidak ditemukan atau akses ditolak'], 404);
@@ -70,35 +69,38 @@ class ScoreController extends Controller
         ]);
     }
 
-    // Menampilkan form untuk menambahkan nilai baru
+    // Menampilkan form input nilai baru
     public function create()
     {
         $user = Auth::user();
 
-        $students = $user->role === 'administration'
-            ? Student::all()
-            : Student::where('class_id', $user->class_id)->get();
+        if ($user->role === 'administration') {
+            abort(403, 'Anda tidak memiliki akses.');
+        }
 
+        $students = Student::where('class_id', $user->class_id)->get();
         $periods = Period::all();
         $criterias = Criteria::all();
 
         return view('scores.create', compact('students', 'periods', 'criterias'));
     }
 
-    // Menyimpan nilai baru ke database
-
+    // Menyimpan nilai siswa baru
     public function store(Request $request)
     {
         $user = Auth::user();
+
+        if ($user->role === 'administration') {
+            abort(403, 'Anda tidak memiliki akses.');
+        }
+
         $teacherClassId = $user->class_id;
 
         $validated = $request->validate([
             'student_id' => [
                 'required',
-                Rule::exists('students', 'id')->where(function ($query) use ($teacherClassId, $user) {
-                    if ($user->role !== 'administration') {
-                        $query->where('class_id', $teacherClassId);
-                    }
+                Rule::exists('students', 'id')->where(function ($query) use ($teacherClassId) {
+                    $query->where('class_id', $teacherClassId);
                 }),
             ],
             'period_id' => 'required|exists:periods,id',
@@ -118,14 +120,13 @@ class ScoreController extends Controller
         return back()->with('success', 'Nilai berhasil disimpan.');
     }
 
-
-    // Menampilkan form untuk mengedit nilai
+    // Menampilkan form edit nilai
     public function edit(Student $student, Period $period)
     {
         $user = Auth::user();
 
-        if ($user->role !== 'administration' && $student->class_id !== $user->class_id) {
-            abort(403);
+        if ($user->role === 'administration' || $student->class_id !== $user->class_id) {
+            abort(403, 'Anda tidak memiliki akses.');
         }
 
         $criteria = Criteria::all();
@@ -137,18 +138,20 @@ class ScoreController extends Controller
         return view('scores.edit', compact('student', 'period', 'criteria', 'existingScores'));
     }
 
-    // Memperbarui data nilai
+    // Menyimpan perubahan nilai
     public function update(Request $request, Score $score)
     {
         $user = Auth::user();
+
+        if ($user->role === 'administration') {
+            abort(403, 'Anda tidak memiliki akses.');
+        }
 
         $validated = $request->validate([
             'student_id' => [
                 'required',
                 Rule::exists('students', 'id')->where(function ($query) use ($user) {
-                    if ($user->role !== 'administration') {
-                        $query->where('class_id', $user->class_id);
-                    }
+                    $query->where('class_id', $user->class_id);
                 }),
             ],
             'period_id' => 'required|exists:periods,id',
@@ -170,10 +173,22 @@ class ScoreController extends Controller
         return redirect()->route('homeroom-teacher.scores.index')->with('success', 'Nilai berhasil diperbarui.');
     }
 
-
-    // Menghapus data nilai
+    // Menghapus nilai
     public function destroy(Score $score)
     {
-        //
+        $user = Auth::user();
+
+        if ($user->role === 'administration') {
+            abort(403, 'Anda tidak memiliki akses.');
+        }
+
+        // Pastikan hanya wali kelas dari siswa terkait yang bisa hapus
+        if ($score->student->class_id !== $user->class_id) {
+            abort(403, 'Anda tidak memiliki akses.');
+        }
+
+        $score->delete();
+
+        return back()->with('success', 'Nilai berhasil dihapus.');
     }
 }

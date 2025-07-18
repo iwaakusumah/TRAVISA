@@ -36,7 +36,7 @@ $rolePrefix = $user->role === 'administration' ? 'administration' : 'homeroom-te
                                 </div>
 
                                 {{-- Jenis Kelamin --}}
-                                <div class="form-group col-md-6">
+                                <div class="form-group col-md-3">
                                     <label for="gender">Jenis Kelamin</label>
                                     <select id="gender" name="gender" class="form-control" required>
                                         <option value="" disabled {{ old('gender', $student->gender) ? '' : 'selected' }}>Pilih Jenis Kelamin</option>
@@ -45,16 +45,10 @@ $rolePrefix = $user->role === 'administration' ? 'administration' : 'homeroom-te
                                     </select>
                                     @error('gender') <small class="text-danger">{{ $message }}</small> @enderror
                                 </div>
-                            </div>
 
-                            @php
-                            $user = Auth::user();
-                            @endphp
-
-                            @if ($user->role === 'administration')
-                            <div class="form-row">
+                                @if ($user->role === 'administration')
                                 {{-- Kelas --}}
-                                <div class="form-group col-md-6">
+                                <div class="form-group col-md-3">
                                     <label for="class_id">Kelas</label>
                                     <select id="class_id" name="class_id" class="form-control" required>
                                         <option value="" disabled {{ old('class_id', $student->class_id) ? '' : 'selected' }}>Pilih Kelas</option>
@@ -63,18 +57,6 @@ $rolePrefix = $user->role === 'administration' ? 'administration' : 'homeroom-te
                                             {{ $class->name }}
                                         </option>
                                         @endforeach
-                                    </select>
-                                </div>
-
-                                {{-- Jurusan --}}
-                                <div class="form-group col-md-6">
-                                    <label for="major">Jurusan</label>
-                                    <select id="major" name="major" class="form-control" required>
-                                        <option value="" disabled {{ old('major', $student->major) ? '' : 'selected' }}>Pilih Jurusan</option>
-                                        <option value="TKJ" {{ old('major', $student->major) == 'TKJ' ? 'selected' : '' }}>Teknik Komputer dan Jaringan</option>
-                                        <option value="TKR" {{ old('major', $student->major) == 'TKR' ? 'selected' : '' }}>Teknik Kendaraan Ringan</option>
-                                        <option value="AK" {{ old('major', $student->major) == 'AK' ? 'selected' : '' }}>Akuntansi</option>
-                                        <option value="AP" {{ old('major', $student->major) == 'AP' ? 'selected' : '' }}>Administrasi Perkantoran</option>
                                     </select>
                                 </div>
                             </div>

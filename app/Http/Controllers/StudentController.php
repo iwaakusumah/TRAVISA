@@ -56,46 +56,73 @@ class StudentController extends Controller
         $user = Auth::user();
         $rolePrefix = $user->role === 'administration' ? 'administration' : 'homeroom-teacher';
 
-        $majorsMap = [
-            'TKJ' => 'Teknik Komputer dan Jaringan',
-            'TKR' => 'Teknik Kendaraan Ringan',
-            'AK'  => 'Akuntansi',
-            'AP'  => 'Administrasi Perkantoran',
-        ];
-
         if ($user->role === 'administration') {
             $validated = $request->validate([
                 'name' => 'required|string|max:255|unique:students,name',
                 'gender' => 'required|in:F,M',
                 'class_id' => 'required|exists:classes,id',
-                'major' => 'required|in:' . implode(',', array_keys($majorsMap)),
             ]);
 
-            // Konversi singkatan ke nama lengkap
-            $majorFullName = $majorsMap[$validated['major']];
+            $class = SchoolClass::findOrFail($validated['class_id']);
+            $className = strtoupper($class->name); // Contoh: "X TKJ 3"
+
+            // Level: ambil X, XI, atau XII dari awal nama kelas
+            $level = null;
+            if (str_starts_with($className, 'XII')) {
+                $level = 'XII';
+            } elseif (str_starts_with($className, 'XI')) {
+                $level = 'XI';
+            } elseif (str_starts_with($className, 'X')) {
+                $level = 'X';
+            }
+
+            // Jurusan dari nama kelas
+            $major = match (true) {
+                str_contains($className, 'TKJ') => 'Teknik Komputer dan Jaringan',
+                str_contains($className, 'TKR') => 'Teknik Kendaraan Ringan',
+                str_contains($className, 'AK')  => 'Akuntansi',
+                str_contains($className, 'AP')  => 'Administrasi Perkantoran',
+                default => null,
+            };
+
+            if (!$major || !$level) {
+                return back()->withErrors(['class_id' => 'Tidak dapat menentukan jurusan atau level dari nama kelas.']);
+            }
 
             Student::create([
                 'name' => $validated['name'],
                 'gender' => $validated['gender'],
-                'class_id' => $validated['class_id'],
-                'major' => $majorFullName, // Simpan nama lengkap di DB
+                'class_id' => $class->id,
+                'major' => $major,
+                'level' => $level,
             ]);
 
             return redirect()->route($rolePrefix . '.students.index')->with('success', 'Siswa berhasil ditambahkan.');
         }
 
+        // Bagi wali kelas
         $class = SchoolClass::findOrFail($user->class_id);
+        $className = strtoupper($class->name);
 
         $major = match (true) {
-            str_contains(strtoupper($class->name), 'TKJ') => 'Teknik Komputer dan Jaringan',
-            str_contains(strtoupper($class->name), 'TKR') => 'Teknik Kendaraan Ringan',
-            str_contains(strtoupper($class->name), 'AK')  => 'Akuntansi',
-            str_contains(strtoupper($class->name), 'AP')  => 'Administrasi Perkantoran',
+            str_contains($className, 'TKJ') => 'Teknik Komputer dan Jaringan',
+            str_contains($className, 'TKR') => 'Teknik Kendaraan Ringan',
+            str_contains($className, 'AK')  => 'Akuntansi',
+            str_contains($className, 'AP')  => 'Administrasi Perkantoran',
             default => null,
         };
 
-        if (!$major) {
-            return back()->withErrors(['major' => 'Jurusan tidak dikenali dari nama kelas.']);
+        $level = null;
+        if (str_starts_with($className, 'XII')) {
+            $level = 'XII';
+        } elseif (str_starts_with($className, 'XI')) {
+            $level = 'XI';
+        } elseif (str_starts_with($className, 'X')) {
+            $level = 'X';
+        }
+
+        if (!$major || !$level) {
+            return back()->withErrors(['class_id' => 'Jurusan atau level tidak dikenali dari nama kelas.']);
         }
 
         $validated = $request->validate([
@@ -108,6 +135,7 @@ class StudentController extends Controller
             'gender' => $validated['gender'],
             'class_id' => $class->id,
             'major' => $major,
+            'level' => $level,
         ]);
 
         return redirect()->route($rolePrefix . '.students.index')->with('success', 'Siswa berhasil ditambahkan.');
@@ -136,80 +164,95 @@ class StudentController extends Controller
         return view('students.edit', compact('student', 'classes', 'majors'));
     }
 
-
     // Update data siswa
     public function update(Request $request, Student $student)
     {
         $user = Auth::user();
         $rolePrefix = $user->role === 'administration' ? 'administration' : 'homeroom-teacher';
 
-        // Cek akses homeroom teacher hanya boleh edit siswa dari kelasnya
         if ($user->role !== 'administration' && $student->class_id !== $user->class_id) {
             abort(403, 'Anda tidak memiliki akses untuk mengedit siswa ini.');
         }
 
-        // Jika admin, izinkan edit nama, gender, major, dan class_id
         if ($user->role === 'administration') {
             $validated = $request->validate([
-                'name' => 'required|string|max:255|unique:students,name',
+                'name' => 'required|string|max:255|unique:students,name,' . $student->id,
                 'gender' => 'required|in:F,M',
-                'major' => 'required|in:TKJ,TKR,AK,AP',
                 'class_id' => 'required|exists:classes,id',
             ]);
 
-            // Mapping singkatan jurusan ke nama lengkap (seperti create)
-            $majorsMap = [
-                'TKJ' => 'Teknik Komputer dan Jaringan',
-                'TKR' => 'Teknik Kendaraan Ringan',
-                'AK'  => 'Akuntansi',
-                'AP'  => 'Administrasi Perkantoran',
-            ];
+            $class = SchoolClass::findOrFail($validated['class_id']);
+            $className = strtoupper($class->name);
 
-            $majorFull = $majorsMap[$validated['major']] ?? null;
+            $level = null;
+            if (str_starts_with($className, 'XII')) {
+                $level = 'XII';
+            } elseif (str_starts_with($className, 'XI')) {
+                $level = 'XI';
+            } elseif (str_starts_with($className, 'X')) {
+                $level = 'X';
+            }
 
-            if (!$majorFull) {
-                return back()->withErrors(['major' => 'Jurusan tidak valid.']);
+            $major = match (true) {
+                str_contains($className, 'TKJ') => 'Teknik Komputer dan Jaringan',
+                str_contains($className, 'TKR') => 'Teknik Kendaraan Ringan',
+                str_contains($className, 'AK')  => 'Akuntansi',
+                str_contains($className, 'AP')  => 'Administrasi Perkantoran',
+                default => null,
+            };
+
+            if (!$major || !$level) {
+                return back()->withErrors(['class_id' => 'Tidak dapat menentukan jurusan atau level dari nama kelas.']);
             }
 
             $student->update([
                 'name' => $validated['name'],
                 'gender' => $validated['gender'],
-                'major' => $majorFull,
                 'class_id' => $validated['class_id'],
+                'major' => $major,
+                'level' => $level,
             ]);
         } else {
-            // Untuk homeroom teacher, ambil data kelas dari user
             $class = SchoolClass::findOrFail($user->class_id);
+            $className = strtoupper($class->name);
 
             $major = match (true) {
-                str_contains(strtoupper($class->name), 'TKJ') => 'Teknik Komputer dan Jaringan',
-                str_contains(strtoupper($class->name), 'TKR') => 'Teknik Kendaraan Ringan',
-                str_contains(strtoupper($class->name), 'AK')  => 'Akuntansi',
-                str_contains(strtoupper($class->name), 'AP')  => 'Administrasi Perkantoran',
+                str_contains($className, 'TKJ') => 'Teknik Komputer dan Jaringan',
+                str_contains($className, 'TKR') => 'Teknik Kendaraan Ringan',
+                str_contains($className, 'AK')  => 'Akuntansi',
+                str_contains($className, 'AP')  => 'Administrasi Perkantoran',
                 default => null,
             };
 
-            if (!$major) {
-                return back()->withErrors(['major' => 'Jurusan tidak dikenali dari nama kelas.']);
+            $level = null;
+            if (str_starts_with($className, 'XII')) {
+                $level = 'XII';
+            } elseif (str_starts_with($className, 'XI')) {
+                $level = 'XI';
+            } elseif (str_starts_with($className, 'X')) {
+                $level = 'X';
+            }
+
+            if (!$major || !$level) {
+                return back()->withErrors(['class_id' => 'Jurusan atau level tidak dikenali dari nama kelas.']);
             }
 
             $validated = $request->validate([
-                'name' => 'required|string|max:255|unique:students,name',
+                'name' => 'required|string|max:255|unique:students,name,' . $student->id,
                 'gender' => 'required|in:F,M',
             ]);
 
             $student->update([
                 'name' => $validated['name'],
                 'gender' => $validated['gender'],
+                'class_id' => $class->id,
                 'major' => $major,
-                'class_id' => $class->id, // pastikan class_id tidak berubah
+                'level' => $level,
             ]);
         }
 
         return redirect()->route($rolePrefix . '.students.index')->with('success', 'Siswa berhasil diperbarui.');
     }
-
-
 
     // Hapus data siswa
     public function destroy(Student $student)
