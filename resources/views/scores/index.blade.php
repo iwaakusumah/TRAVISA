@@ -19,12 +19,8 @@
         <div class="col-12">
           <div class="card">
             <div class="card-header d-flex justify-content-end">
-              @php
-              $user = Auth::user();
-              $rolePrefix = $user->role === 'administration' ? 'administration' : 'homeroom-teacher';
-              @endphp
               <div>
-                <a href="{{ route($rolePrefix . '.scores.create') }}" class="btn btn-icon icon-left btn-primary mr-1"><i class="far fa-plus-square"></i> Tambah Data</a>
+                <a href="{{ route('homeroom-teacher.scores.create') }}" class="btn btn-icon icon-left btn-primary mr-1"><i class="far fa-plus-square"></i> Tambah Data</a>
               </div>
             </div>
             <div class="card-body">
@@ -62,18 +58,14 @@
                       @endforeach
 
                       <td class="text-center">
-                        @php
-                        $user = Auth::user();
-                        $rolePrefix = $user->role === 'administration' ? 'administration' : 'homeroom-teacher';
-                        @endphp
 
                         <a href="#"
                           class="btn btn-primary btn-action mr-1 btn-read"
                           title="Read"
-                          data-url="{{ route($rolePrefix . '.scores.show', $score->student_id) }}">
+                          data-url="{{ route('homeroom-teacher.scores.show', $score->student_id) }}">
                           <i class="fas fa-eye"></i>
                         </a>
-                        <a href="{{ route($rolePrefix . '.scores.edit', [$student->id, $period->id]) }}"
+                        <a href="{{ route('homeroom-teacher.scores.edit', [$student->id, $period->id]) }}"
                           class="btn btn-warning btn-action mr-1"
                           data-toggle="tooltip" title="Edit">
                           <i class="fas fa-pen-to-square"></i>
