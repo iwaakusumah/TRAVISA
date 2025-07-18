@@ -59,12 +59,12 @@
                     <i class="far fa-id-card"></i> <span>Data Siswa</span>
                 </a>
             </li>
-            <li class="{{ Route::is('administration.scores.index') ? 'active' : '' }}">
-                <a class="nav-link" href="{{ route('administration.scores.index') }}">
-                    <i class="far fa-file-alt"></i> <span>Nilai Siswa</span>
-                </a>
-            </li>
             @endif
+            @endif
+            
+            @if (auth()->user()->role === 'administration')
+            <li class="menu-header">Data Pengguna</li>
+            <li class="{{ Route::is('administration.users.index') ? 'active' : '' }}"><a class="nav-link" href="{{ route('administration.users.index') }}"><i class="fas fa-users"></i> <span>Data Pengguna</span></a></li>
             @endif
 
             @if (auth()->user()->role === 'staff_student')

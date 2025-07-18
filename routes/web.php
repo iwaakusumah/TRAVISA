@@ -73,7 +73,6 @@ Route::middleware(['auth', 'role:administration'])
         Route::get('/', [DashboardController::class, 'administrationDashboard'])->name('dashboard');
         Route::resource('users', UserController::class);
         Route::resource('students', StudentController::class);
-        Route::resource('scores', ScoreController::class);
     });
 
 Route::middleware('auth')->group(function () {
