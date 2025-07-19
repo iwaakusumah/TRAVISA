@@ -15,6 +15,7 @@ return new class extends Migration
             $table->id();
             $table->foreignId('class_id')->nullable()->constrained('classes')->onDelete('set null');
             $table->string('name');
+            $table->string('role')->default('homeroom_teacher');
             $table->string('email')->unique();
             $table->timestamp('email_verified_at')->nullable();
             $table->string('password');

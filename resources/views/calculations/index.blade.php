@@ -14,7 +14,7 @@
                 <div class="card-header d-flex justify-content-between align-items-center">
                     <h4>Hasil Perhitungan PROMETHEE</h4>
 
-                    @if (Auth::user()->role !== 'headmaster')
+                    @if ($canSave)
                     <form id="save-form" method="POST" action="{{ route('staff-student.calculations.save') }}">
                         @csrf
                         <input type="hidden" name="period_id" value="{{ $period->id }}">

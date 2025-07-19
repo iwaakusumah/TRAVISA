@@ -2,13 +2,13 @@
 
 namespace App\Http\Controllers;
 
+use App\Enums\Role;
 use App\Models\Criteria;
 use App\Models\Period;
 use App\Models\Result;
-use App\Models\SchoolClass;
-use App\Models\Student;
 use App\Service\PrometheeService;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class CalculationController extends Controller
 {
@@ -33,13 +33,12 @@ class CalculationController extends Controller
             return redirect()->back()->with('error', 'Periode belum dipilih.');
         }
 
-        // Jalankan perhitungan
         $data = $this->prometheeService->calculateByPeriod($periodId);
-
-        // Ambil nama kriteria untuk header tabel
         $criteriaNames = Criteria::pluck('name', 'id')->toArray();
-
         $period = Period::find($periodId);
+
+        // Tambahkan pengecekan role di sini
+        $canSave = Auth::check() && Auth::user()->role !== Role::HEADMASTER;
 
         return view('calculations.index', [
             'allResults' => $data['results'],
@@ -49,26 +48,26 @@ class CalculationController extends Controller
             'allHMatrix' => $data['allHMatrix'],
             'criteriaNames' => $criteriaNames,
             'period' => $period,
+            'canSave' => $canSave, // <-- kirim ke view
         ]);
     }
 
     public function storeLolos(Request $request)
-{
-    $periodId = $request->input('period_id');
+    {
+        $periodId = $request->input('period_id');
 
-    if (!$periodId) {
-        return redirect()->back()->with('error', 'Periode tidak ditemukan.');
+        if (!$periodId) {
+            return redirect()->back()->with('error', 'Periode tidak ditemukan.');
+        }
+
+        // Hapus data lama di periode ini agar tidak ada data ganda
+        Result::where('period_id', $periodId)->delete();
+
+        $data = $this->prometheeService->calculateByPeriod($periodId);
+
+        // Kirim seluruh hasil grouped, savePassingStudents hanya simpan rank 1 per group
+        $this->prometheeService->savePassingStudents($data['results'], $periodId);
+
+        return redirect()->back()->with('success', 'Data hasil seleksi berhasil disimpan.');
     }
-
-    // Hapus data lama di periode ini agar tidak ada data ganda
-    Result::where('period_id', $periodId)->delete();
-
-    $data = $this->prometheeService->calculateByPeriod($periodId);
-
-    // Kirim seluruh hasil grouped, savePassingStudents hanya simpan rank 1 per group
-    $this->prometheeService->savePassingStudents($data['results'], $periodId);
-
-    return redirect()->back()->with('success', 'Data hasil seleksi berhasil disimpan.');
-}
-
 }
