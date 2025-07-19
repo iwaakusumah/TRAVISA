@@ -38,7 +38,7 @@ class CalculationController extends Controller
         $period = Period::find($periodId);
 
         // Tambahkan pengecekan role di sini
-        $canSave = Auth::check() && Auth::user()->role !== Role::HEADMASTER;
+        $canSave = Auth::check() && Auth::user()->role !== 'headmaster';
 
         return view('calculations.index', [
             'allResults' => $data['results'],
