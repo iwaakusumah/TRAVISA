@@ -4,6 +4,13 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 
+/**
+ * @property int $id
+ * @property string|null $preference_function
+ * @property float|null $q
+ * @property float|null $p_threshold
+ * @property \Illuminate\Database\Eloquent\Collection $weights
+ */
 class Criteria extends Model
 {
     protected $fillable = [

@@ -87,19 +87,11 @@
                                 {{-- Kelas --}}
                                 <div class="form-group col-md-6">
                                     <label for="class_id">Kelas (khusus wali kelas)</label>
-
-                                    {{-- Jika bukan homeroom_teacher, tetap kirim nilai class_id --}}
-                                    @if (old('role', $user->role) !== 'homeroom_teacher')
-                                        <input type="hidden" name="class_id" value="{{ old('class_id', $user->class_id) }}">
-                                    @endif
-
-                                    <select name="class_id" id="class_id" class="form-control"
-                                        @if (old('role', $user->role) !== 'homeroom_teacher') 
-                                            style="pointer-events: none; background-color: #e9ecef;" 
-                                        @endif>
+                                    <select name="class_id" id="class_id" class="form-control" 
+                                        @if(old('role', $user->role) !== 'homeroom_teacher') disabled @endif>
                                         <option value="">Pilih Kelas</option>
                                         @foreach ($schoolClasses as $class)
-                                            <option value="{{ $class->id }}"
+                                            <option value="{{ $class->id }}" 
                                                 {{ old('class_id', $user->class_id) == $class->id ? 'selected' : '' }}>
                                                 {{ $class->name }}
                                             </option>
@@ -120,4 +112,28 @@
         </div>
     </section>
 </div>
+@endsection
+
+@section('scripts')
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        const roleSelect = document.getElementById('role');
+        const classSelect = document.getElementById('class_id');
+
+        function toggleClassSelect() {
+            if (roleSelect.value === 'homeroom_teacher') {
+                classSelect.removeAttribute('disabled');
+                classSelect.style.pointerEvents = '';
+                classSelect.style.backgroundColor = '';
+            } else {
+                classSelect.setAttribute('disabled', 'disabled');
+                classSelect.style.pointerEvents = 'none';
+                classSelect.style.backgroundColor = '#e9ecef';
+            }
+        }
+
+        roleSelect.addEventListener('change', toggleClassSelect);
+        toggleClassSelect();
+    });
+</script>
 @endsection

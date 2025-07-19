@@ -13,27 +13,9 @@ class UserController extends Controller
      */
     public function index()
     {
-        // Menampilkan semua user beserta kelasnya
-        $users = User::with('schoolClass')->get(); // Mengambil relasi schoolClass
-        // Menambahkan jabatan sesuai dengan role pengguna
-        foreach ($users as $user) {
-            switch ($user->role) {
-                case 'homeroom_teacher':
-                    $user->role = 'Wali Kelas';
-                    break;
-                case 'administration':
-                    $user->role = 'Staff Tata Usaha';
-                    break;
-                case 'headmaster':
-                    $user->role = 'Kepala Sekolah';
-                    break;
-                case 'staff_student':
-                    $user->role = 'Wakil Kesiswaan';
-                    break;
-                default:
-                    $user->role = 'Jabatan Tidak Diketahui';
-            }
-        }
+        // Ambil semua user beserta relasi kelas
+        $users = User::with('schoolClass')->get();
+
         return view('users.index', compact('users'));
     }
 
@@ -42,7 +24,7 @@ class UserController extends Controller
      */
     public function create()
     {
-        $schoolClasses = SchoolClass::all(); // Ambil semua kelas dari database
+        $schoolClasses = SchoolClass::all();
         return view('users.create', compact('schoolClasses'));
     }
 
@@ -51,66 +33,53 @@ class UserController extends Controller
      */
     public function store(Request $request)
     {
-        // Validasi input
+        // Aturan validasi dasar
         $rules = [
             'name' => 'required|string|max:255|unique:users,name',
-            'email' => 'required|string|email|max:255|unique:users',
+            'email' => 'required|string|email|max:255|unique:users,email',
             'password' => 'required|string|min:8|confirmed',
             'role' => 'required|in:administration,homeroom_teacher,staff_student,headmaster',
         ];
 
-        // Jika role adalah homeroom_teacher, maka class_idd wajib ada
-        if ($request->role == 'homeroom_teacher') {
-            $rules['class_id'] = 'required|exists:users,class_id';
+        // Jika role homeroom_teacher wajib ada class_id dari tabel school_classes
+        if ($request->input('role') === 'homeroom_teacher') {
+            $rules['class_id'] = 'required|exists:school_classes,id';
         }
 
-        // Validasi input dengan aturan yang sudah ditentukan
         $validated = $request->validate($rules);
 
-        // Menyimpan data user baru
         User::create([
             'name' => $validated['name'],
             'email' => $validated['email'],
             'password' => bcrypt($validated['password']),
-            'class_id' => $validated['class_id'] ?? null,  // Menyimpan ID kelas jika ada
-            'role' => $validated['role'],  // Menyimpan role
+            'class_id' => $validated['class_id'] ?? null,
+            'role' => $validated['role'],
         ]);
 
         return redirect()->route('administration.users.index')->with('success', 'Pengguna berhasil ditambahkan!');
     }
 
-
-    /**
-     * Display the specified resource.
-     */
-    public function show(string $id)
-    {
-        //
-    }
-
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit($id)
+    public function edit(int $id)
     {
-        // Ambil user berdasarkan ID
+        /** @var User $user */
         $user = User::findOrFail($id);
-
-        // Ambil semua data kelas
         $schoolClasses = SchoolClass::all();
 
-        // Tampilkan form edit untuk user yang dipilih
         return view('users.edit', compact('user', 'schoolClasses'));
     }
 
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, $id)
+    public function update(Request $request, int $id)
     {
+        /** @var User $user */
         $user = User::findOrFail($id);
 
-        // Validasi input
+        // Aturan validasi
         $rules = [
             'name' => 'required|string|max:255|unique:users,name,' . $id,
             'email' => 'required|string|email|max:255|unique:users,email,' . $id,
@@ -118,19 +87,25 @@ class UserController extends Controller
             'role' => 'required|in:administration,homeroom_teacher,staff_student,headmaster',
         ];
 
-        if ($request->role === 'homeroom_teacher') {
-            $rules['class_id'] = 'required|exists:users,class_id';
+        if ($request->input('role') === 'homeroom_teacher') {
+            $rules['class_id'] = 'required|exists:school_classes,id';
         }
 
         $validated = $request->validate($rules);
 
-        $user->update([
+        $data = [
             'name' => $validated['name'],
             'email' => $validated['email'],
-            'password' => isset($validated['password']) ? bcrypt($validated['password']) : $user->password,
             'role' => $validated['role'],
             'class_id' => $validated['class_id'] ?? null,
-        ]);
+        ];
+
+        // Jika password diisi, hash dan simpan
+        if (!empty($validated['password'])) {
+            $data['password'] = bcrypt($validated['password']);
+        }
+
+        $user->update($data);
 
         return redirect()->route('administration.users.index')->with('success', 'Pengguna berhasil diperbarui!');
     }
@@ -140,7 +115,6 @@ class UserController extends Controller
      */
     public function destroy(User $user)
     {
-        // Menghapus data user
         $user->delete();
 
         return redirect()->route('administration.users.index')->with('success', 'Pengguna berhasil dihapus!');

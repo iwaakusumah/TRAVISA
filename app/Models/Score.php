@@ -6,6 +6,13 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
+/**
+ * @property int $id
+ * @property int $student_id
+ * @property int $criteria_id
+ * @property float|int $value
+ * // properti lain sesuai tabel
+ */
 class Score extends Model
 {
     use HasFactory;

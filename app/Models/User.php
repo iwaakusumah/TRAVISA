@@ -2,16 +2,22 @@
 
 namespace App\Models;
 
-// use Illuminate\Contracts\Auth\MustVerifyEmail;
-
-use App\Enums\Role;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 
+/**
+ * @property int $id
+ * @property int|null $class_id
+ * @property string $name
+ * @property string $email
+ * @property string $password
+ * @property string $role
+ * @property \Illuminate\Support\Carbon|null $email_verified_at
+ * @property string|null $remember_token
+ */
 class User extends Authenticatable
 {
-    /** @use HasFactory<\Database\Factories\UserFactory> */
     use HasFactory, Notifiable;
 
     /**
@@ -22,9 +28,9 @@ class User extends Authenticatable
     protected $fillable = [
         'class_id',
         'name',
+        'role',
         'email',
         'password',
-        'role',
     ];
 
     public function schoolClass()
@@ -32,23 +38,38 @@ class User extends Authenticatable
         return $this->belongsTo(SchoolClass::class, 'class_id');
     }
 
-    public function isHomeroomTeacher()
+    public function isHomeroomTeacher(): bool
     {
         return $this->role === 'homeroom_teacher';
     }
 
-    public function isStaffIt()
+    public function isAdministration(): bool
     {
-        return $this->role === 'staff_it';
+        return $this->role === 'administration';
     }
-    public function isHeadmaster()
+
+    public function isHeadmaster(): bool
     {
         return $this->role === 'headmaster';
     }
 
-    public function isStaffStudent()
+    public function isStaffStudent(): bool
     {
         return $this->role === 'staff_student';
+    }
+
+    /**
+     * Role label accessor, contoh "Wali Kelas" untuk "homeroom_teacher".
+     */
+    public function getRoleLabelAttribute(): string
+    {
+        return match ($this->role) {
+            'homeroom_teacher' => 'Wali Kelas',
+            'administration' => 'Staff Tata Usaha',
+            'headmaster' => 'Kepala Sekolah',
+            'staff_student' => 'Wakil Kesiswaan',
+            default => 'Jabatan Tidak Diketahui',
+        };
     }
 
     /**
@@ -62,16 +83,12 @@ class User extends Authenticatable
     ];
 
     /**
-     * Get the attributes that should be cast.
+     * The attributes that should be cast.
      *
-     * @return array<string, string>
+     * @var array<string, string>
      */
-    protected function casts(): array
-    {
-        return [
-            'role' => Role::class,
-            'email_verified_at' => 'datetime',
-            'password' => 'hashed',
-        ];
-    }
+    protected $casts = [
+        'email_verified_at' => 'datetime',
+        'password' => 'hashed',
+    ];
 }
