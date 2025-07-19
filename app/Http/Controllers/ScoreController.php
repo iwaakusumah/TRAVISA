@@ -108,6 +108,15 @@ class ScoreController extends Controller
             'scores.*' => 'required|numeric|min:0|max:100',
         ]);
 
+        // Validasi apakah student_id sudah memiliki nilai pada period_id yang sama
+        $existingScore = Score::where('student_id', $validated['student_id'])
+            ->where('period_id', $validated['period_id'])
+            ->exists();  // Menggunakan exists() untuk memeriksa apakah data sudah ada
+
+        if ($existingScore) {
+            return back()->withErrors(['period_id' => 'Siswa ini sudah memiliki nilai pada periode yang sama.']);
+        }
+
         foreach ($validated['scores'] as $criteriaId => $value) {
             Score::create([
                 'student_id' => $validated['student_id'],
@@ -158,6 +167,17 @@ class ScoreController extends Controller
             'scores' => 'required|array',
             'scores.*' => 'required|numeric|min:0|max:100',
         ]);
+
+        // Validasi apakah student_id sudah memiliki nilai pada period_id yang sama (untuk update)
+        $existingScore = Score::where('student_id', $validated['student_id'])
+            ->where('period_id', $validated['period_id'])
+            ->where('id', '!=', $score->id) // Mengecualikan skor yang sedang diupdate
+            ->exists();  // Menggunakan exists() untuk cek data yang sudah ada
+
+        if ($existingScore) {
+            return redirect()->route('homeroom-teacher.scores.index')
+                ->withErrors(['period_id' => 'Siswa ini sudah memiliki nilai pada periode yang sama.']);
+        }
 
         foreach ($validated['scores'] as $criteriaId => $value) {
             Score::updateOrCreate(

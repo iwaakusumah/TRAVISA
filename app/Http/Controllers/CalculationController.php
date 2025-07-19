@@ -2,7 +2,6 @@
 
 namespace App\Http\Controllers;
 
-use App\Enums\Role;
 use App\Models\Criteria;
 use App\Models\Period;
 use App\Models\Result;
