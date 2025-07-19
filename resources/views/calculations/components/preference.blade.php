@@ -18,37 +18,39 @@
         <div class="tab-content mt-3">
             @foreach($allResults as $group)
             @php
-                $groupName = $group['group_name'];
-                $students = collect($group['results'])->sortBy('student.id');
-                $studentIds = $students->pluck('student.id');
-                $studentNames = $students->pluck('student.name', 'student.id');
-                $preferenceMatrix = $preferenceMatrices[$groupName] ?? [];
+            $groupName = $group['group_name'];
+            $students = collect($group['results'])->sortBy('student.id');
+            $studentIds = $students->pluck('student.id');
+            $studentNames = $students->pluck('student.name', 'student.id');
+            $preferenceMatrix = $preferenceMatrices[$groupName] ?? [];
             @endphp
             <div class="tab-pane fade {{ $loop->first ? 'show active' : '' }}"
                 id="pref-{{ $group['group_slug'] }}">
-                <div class="table-responsive">
-                    <table class="table table-bordered">
-                        <thead>
-                            <tr>
-                                <th class="text-center">Siswa</th>
-                                @foreach($students as $student)
-                                <th class="text-center">{{ $student['student']->name }}</th>
+                <div class="card-body">
+                    <div class="table-responsive">
+                        <table class="table table-striped datatable" id="pref-table-{{ $group['group_slug'] }}">
+                            <thead>
+                                <tr>
+                                    <th class="text-center">Siswa</th>
+                                    @foreach($students as $student)
+                                    <th class="text-center">{{ $student['student']->name }}</th>
+                                    @endforeach
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @foreach($students as $studentA)
+                                <tr>
+                                    <td><strong>{{ $studentA['student']->name }}</strong></td>
+                                    @foreach($students as $studentB)
+                                    <td class="text-center">
+                                        {{ number_format($preferenceMatrix[$studentA['student']->id][$studentB['student']->id] ?? 0, 2) }}
+                                    </td>
+                                    @endforeach
+                                </tr>
                                 @endforeach
-                            </tr>
-                        </thead>
-                        <tbody>
-                            @foreach($students as $studentA)
-                            <tr>
-                                <td><strong>{{ $studentA['student']->name }}</strong></td>
-                                @foreach($students as $studentB)
-                                <td class="text-center">
-                                    {{ number_format($preferenceMatrix[$studentA['student']->id][$studentB['student']->id] ?? 0, 2) }}
-                                </td>
-                                @endforeach
-                            </tr>
-                            @endforeach
-                        </tbody>
-                    </table>
+                            </tbody>
+                        </table>
+                    </div>
                 </div>
             </div>
             @endforeach

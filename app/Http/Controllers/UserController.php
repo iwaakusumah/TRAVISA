@@ -59,9 +59,9 @@ class UserController extends Controller
             'role' => 'required|in:administration,homeroom_teacher,staff_student,headmaster',
         ];
 
-        // Jika role adalah homeroom_teacher, maka school_class_id wajib ada
+        // Jika role adalah homeroom_teacher, maka class_idd wajib ada
         if ($request->role == 'homeroom_teacher') {
-            $rules['school_class_id'] = 'required|exists:school_classes,id';
+            $rules['class_id'] = 'required|exists:users,class_id';
         }
 
         // Validasi input dengan aturan yang sudah ditentukan
@@ -72,7 +72,7 @@ class UserController extends Controller
             'name' => $validated['name'],
             'email' => $validated['email'],
             'password' => bcrypt($validated['password']),
-            'school_class_id' => $validated['school_class_id'] ?? null,  // Menyimpan ID kelas jika ada
+            'class_id' => $validated['class_id'] ?? null,  // Menyimpan ID kelas jika ada
             'role' => $validated['role'],  // Menyimpan role
         ]);
 
@@ -111,22 +111,28 @@ class UserController extends Controller
         $user = User::findOrFail($id);
 
         // Validasi input
-        $validated = $request->validate([
-            'name' => 'required|string|max:255',
-            'email' => 'required|string|email|max:255|unique:users,email,' . $user->id,
+        $rules = [
+            'name' => 'required|string|max:255|unique:users,name,' . $id,
+            'email' => 'required|string|email|max:255|unique:users,email,' . $id,
             'password' => 'nullable|string|min:8|confirmed',
-            'school_class_id' => 'required|exists:school_classes,id',
-        ]);
+            'role' => 'required|in:administration,homeroom_teacher,staff_student,headmaster',
+        ];
 
-        // Update data user
+        if ($request->role === 'homeroom_teacher') {
+            $rules['class_id'] = 'required|exists:users,class_id';
+        }
+
+        $validated = $request->validate($rules);
+
         $user->update([
             'name' => $validated['name'],
             'email' => $validated['email'],
-            'password' => $validated['password'] ? bcrypt($validated['password']) : $user->password,
-            'school_class_id' => $validated['school_class_id'],
+            'password' => isset($validated['password']) ? bcrypt($validated['password']) : $user->password,
+            'role' => $validated['role'],
+            'class_id' => $validated['class_id'] ?? null,
         ]);
 
-        return redirect()->route('administration.users.index')->with('success', 'User berhasil diperbarui!');
+        return redirect()->route('administration.users.index')->with('success', 'Pengguna berhasil diperbarui!');
     }
 
     /**
@@ -137,6 +143,6 @@ class UserController extends Controller
         // Menghapus data user
         $user->delete();
 
-        return redirect()->route('users.index')->with('success', 'User berhasil dihapus!');
+        return redirect()->route('administration.users.index')->with('success', 'Pengguna berhasil dihapus!');
     }
 }

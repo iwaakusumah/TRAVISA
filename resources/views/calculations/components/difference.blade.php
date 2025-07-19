@@ -28,8 +28,8 @@
                 id="diff-{{ $group['group_slug'] }}">
                 <div class="card-body">
                     <div class="table-responsive">
-                        <table class="table table-bordered table-striped">
-                            <thead class="thead-dark">
+                        <table class="table table-striped datatable" id="diff-table-{{ $group['group_slug'] }}">
+                            <thead>
                                 <tr>
                                     <th class="text-center">Siswa A</th>
                                     <th class="text-center">Siswa B</th>

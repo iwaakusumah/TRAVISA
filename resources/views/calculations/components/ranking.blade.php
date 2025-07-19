@@ -19,12 +19,13 @@
             @foreach($allResults as $group)
             <div class="tab-pane fade {{ $loop->first ? 'show active' : '' }}"
                 id="result-{{ $group['group_slug'] }}">
+                <div class="card-body">
                 <div class="table-responsive">
-                    <table class="table table-striped datatable">
+                    <table class="table table-striped datatable" id="result-table-{{ $group['group_slug'] }}">
                         <thead>
                             <tr>
                                 <th class="text-center">Rank</th>
-                                <th>Nama Siswa</th>
+                                <th class="text-center">Nama Siswa</th>
                                 <th class="text-center">Leaving Flow</th>
                                 <th class="text-center">Entering Flow</th>
                                 <th class="text-center">Net Flow</th>
@@ -48,6 +49,7 @@
                             @endforeach
                         </tbody>
                     </table>
+                </div>
                 </div>
             </div>
             @endforeach

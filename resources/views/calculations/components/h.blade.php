@@ -33,8 +33,8 @@
 
                 <div class="card-body">
                     <div class="table-responsive">
-                        <table class="table table-bordered table-striped">
-                            <thead class="thead-dark">
+                        <table class="table table-striped datatable" id="h-table-{{ $group['group_slug'] }}">
+                            <thead>
                                 <tr>
                                     <th class="text-center align-middle">Siswa A</th>
                                     <th class="text-center align-middle">Siswa B</th>

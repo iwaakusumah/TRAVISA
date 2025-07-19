@@ -19,8 +19,9 @@
             @foreach($allResults as $group)
             <div class="tab-pane fade {{ $loop->first ? 'show active' : '' }}"
                 id="eval-{{ $group['group_slug'] }}">
+                <div class="card-body">
                 <div class="table-responsive">
-                    <table class="table table-bordered">
+                    <table class="table table-striped datatable" id="eval-table-{{ $group['group_slug'] }}">
                         <thead>
                             <tr>
                                 <th class="text-center">Nama Siswa</th>
@@ -42,6 +43,7 @@
                             @endforeach
                         </tbody>
                     </table>
+                </div>
                 </div>
             </div>
             @endforeach

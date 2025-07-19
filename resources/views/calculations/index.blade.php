@@ -47,6 +47,10 @@
 </div>
 @endsection
 
+@section('table')
+<script src="{{ asset('assets/js/page/modules-datatables.js') }}"></script>
+@endsection
+
 @section('toast')
 @if(session('success'))
 <script>
