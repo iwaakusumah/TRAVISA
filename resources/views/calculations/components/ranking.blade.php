@@ -26,8 +26,8 @@
                             <tr>
                                 <th class="text-center">Rank</th>
                                 <th class="text-center">Nama Siswa</th>
-                                <th class="text-center">Leaving Flow</th>
                                 <th class="text-center">Entering Flow</th>
+                                <th class="text-center">Leaving Flow</th>
                                 <th class="text-center">Net Flow</th>
                                 <th class="text-center">Status</th>
                             </tr>
@@ -37,8 +37,8 @@
                             <tr>
                                 <td class="text-center">{{ $result['rank'] }}</td>
                                 <td>{{ $result['student']->name }}</td>
-                                <td class="text-center">{{ number_format($result['leaving_flow'], 2) }}</td>
                                 <td class="text-center">{{ number_format($result['entering_flow'], 2) }}</td>
+                                <td class="text-center">{{ number_format($result['leaving_flow'], 2) }}</td>
                                 <td class="text-center">{{ number_format($result['net_flow'], 2) }}</td>
                                 <td class="text-center">
                                     <span class="badge {{ $result['rank'] <= 1 ? 'badge-success' : 'badge-danger' }}">
