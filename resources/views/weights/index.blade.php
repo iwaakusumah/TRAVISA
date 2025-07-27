@@ -44,8 +44,9 @@
               </div>
               @endif
 
+              <div class="card-body">
               <div class="table-responsive">
-                <table class="table table-striped" id="table-1">
+                <table class="table table-striped datatable">
                   <thead>
                     <tr>
                       <th class="text-center">No.</th>
@@ -70,6 +71,7 @@
                     @endif
                   </tbody>
                 </table>
+              </div>
               </div>
             </div>
           </div>
