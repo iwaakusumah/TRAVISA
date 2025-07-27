@@ -125,7 +125,7 @@
     {{-- Penutup --}}
     <div class="mt-1">
         <p>Demikian kami sampaikan, atas perhatian dan kerjasama yang baik ini kami ucapkan terima kasih.</p>
-        <p>Wassalamu’alaikum Warrahmatullahi Wabarakatuh.</p>
+        <p>Wassalamu'alaikum Warrahmatullahi Wabarakatuh.</p>
     </div>
 
     {{-- Tanda Tangan --}}
