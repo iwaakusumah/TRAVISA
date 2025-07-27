@@ -43,13 +43,17 @@ class ResultController extends Controller
             ->where('period_id', $periodId)
             ->get();
 
+
+        // Set locale ke bahasa Indonesia
+        Carbon::setLocale('id');
+
         // ==== Auto-generate letter number ====
         $today = Carbon::now();
         $month = $today->translatedFormat('F');
         $year = $today->year;
 
-        
-        $suratCountThisYear = 4; 
+
+        $suratCountThisYear = 4;
         $number = str_pad($suratCountThisYear + 1, 3, '0', STR_PAD_LEFT); // misalnya 004
 
         $letterNumber = "TRAVINA-PRIMA/BEA/{$number}/{$month}/{$year}";
