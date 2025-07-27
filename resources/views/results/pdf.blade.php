@@ -102,8 +102,8 @@
                 <th>Nama Siswa</th>
                 <th>Jurusan</th>
                 <th>Kelas</th>
-                <th>Leaving Flow</th>
                 <th>Entering Flow</th>
+                <th>Leaving Flow</th>
                 <th>Net Flow</th>
             </tr>
         </thead>
@@ -114,8 +114,8 @@
                 <td>{{ optional($result->student)->name }}</td>
                 <td>{{ optional($result->student)->major }}</td>
                 <td>{{ optional($result->class)->name }}</td>
-                <td>{{ number_format($result->leaving_flow, 2) }}</td>
                 <td>{{ number_format($result->entering_flow, 2) }}</td>
+                <td>{{ number_format($result->leaving_flow, 2) }}</td>
                 <td>{{ number_format($result->net_flow, 2) }}</td>
             </tr>
             @endforeach
