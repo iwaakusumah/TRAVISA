@@ -114,9 +114,9 @@
                 <td>{{ optional($result->student)->name }}</td>
                 <td>{{ optional($result->student)->major }}</td>
                 <td>{{ optional($result->class)->name }}</td>
-                <td>{{ $result->leaving_flow }}</td>
-                <td>{{ $result->entering_flow }}</td>
-                <td>{{ $result->net_flow }}</td>
+                <td>{{ number_format($result->leaving_flow, 2) }}</td>
+                <td>{{ number_format($result->entering_flow, 2) }}</td>
+                <td>{{ number_format($result->net_flow, 2) }}</td>
             </tr>
             @endforeach
         </tbody>
