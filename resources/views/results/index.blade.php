@@ -53,8 +53,8 @@
                                             <th class="text-center">Nama Siswa</th>
                                             <th class="text-center">Jurusan</th>
                                             <th class="text-center">Kelas</th>
-                                            <th class="text-center">Leaving Flow</th>
                                             <th class="text-center">Entering Flow</th>
+                                            <th class="text-center">Leaving Flow</th>
                                             <th class="text-center">Net Flow</th>
                                         </tr>
                                     </thead>
@@ -66,8 +66,8 @@
                                             <td class="text-center">{{ $result->student->name }}</td>
                                             <td class="text-center">{{ $result->student->major }}</td>
                                             <td class="text-center">{{ $result->class->name }}</td>
-                                            <td class="text-center">{{ number_format($result->leaving_flow, 2) }}</td>
                                             <td class="text-center">{{ number_format($result->entering_flow, 2) }}</td>
+                                            <td class="text-center">{{ number_format($result->leaving_flow, 2) }}</td>
                                             <td class="text-center">{{ number_format($result->net_flow, 2) }}</td>
                                         </tr>
                                         @empty
