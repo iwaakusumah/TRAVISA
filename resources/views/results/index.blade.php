@@ -66,9 +66,9 @@
                                             <td class="text-center">{{ $result->student->name }}</td>
                                             <td class="text-center">{{ $result->student->major }}</td>
                                             <td class="text-center">{{ $result->class->name }}</td>
-                                            <td class="text-center">{{ $result->leaving_flow }}</td>
-                                            <td class="text-center">{{ $result->entering_flow }}</td>
-                                            <td class="text-center">{{ $result->net_flow }}</td>
+                                            <td class="text-center">{{ number_format($result->leaving_flow, 2) }}</td>
+                                            <td class="text-center">{{ number_format($result->entering_flow, 2) }}</td>
+                                            <td class="text-center">{{ number_format($result->net_flow, 2) }}</td>
                                         </tr>
                                         @empty
                                         <tr>
