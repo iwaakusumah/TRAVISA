@@ -66,7 +66,7 @@
                     @endforeach
                     @if($saveWeights->isEmpty())
                     <tr>
-                      <td colspan="6" class="text-center">Tidak ada data kriteria.</td>
+                      <td colspan="4" class="text-center">Tidak ada data kriteria.</td>
                     </tr>
                     @endif
                   </tbody>
