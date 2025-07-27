@@ -45,7 +45,7 @@ class ResultController extends Controller
 
         // ==== Auto-generate letter number ====
         $today = Carbon::now();
-        $month = $today->format('m');
+        $month = $today->translatedFormat('F');
         $year = $today->year;
 
         
