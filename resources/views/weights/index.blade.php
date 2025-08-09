@@ -1,15 +1,15 @@
 @extends('partials.app')
 
-@section('title', 'Data Kriteria Beasiswa | TRAVISA')
+@section('title', 'Bobot Kriteria Beasiswa | TRAVISA')
 
 @section('content')
 <div class="main-content">
   <section class="section">
     <div class="section-header">
-      <h1>Data Kriteria Beasiswa</h1>
+      <h1>Bobot Kriteria Beasiswa</h1>
       <div class="section-header-breadcrumb">
         <div class="breadcrumb-item active"><a href="{{ route('staff-student.dashboard') }}">Dashboard</a></div>
-        <div class="breadcrumb-item">Data Kriteria Beasiswa</div>
+        <div class="breadcrumb-item">Bobot Kriteria Beasiswa</div>
       </div>
     </div>
 
