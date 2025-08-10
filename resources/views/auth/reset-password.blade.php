@@ -16,19 +16,23 @@
 
                         <div class="card-body">
                             <p class="text-muted">We will send a link to reset your password</p>
-                            <form method="POST" action="{{ route('password.update') }}">
+                            <form method="POST" action="{{ route('password.store') }}">
                                 @csrf
 
                                 <!-- Token hidden input (required for Laravel to verify reset request) -->
                                 <input type="hidden" name="token" value="{{ request()->route('token') }}">
 
-                                <div class="form-group">
+                                <div class="form-group mb-3">
                                     <label for="email">Email</label>
-                                    <input id="email" type="email" class="form-control" type="hidden" name="email" value="{{ old('email') }}" required autofocus tabindex="1">
+                                    <input id="email" type="email"
+                                        class="form-control"
+                                        name="email"
+                                        value="{{ old('email', $request->email) }}"
+                                        readonly>
                                 </div>
 
                                 <div class="form-group">
-                                    <label for="password">New Password</label>
+                                    <label for="password">Password Baru</label>
                                     <input id="password" type="password" class="form-control pwstrength" data-indicator="pwindicator" name="password" required tabindex="2">
                                     <div id="pwindicator" class="pwindicator">
                                         <div class="bar"></div>
@@ -37,7 +41,7 @@
                                 </div>
 
                                 <div class="form-group">
-                                    <label for="password-confirm">Confirm Password</label>
+                                    <label for="password-confirm">Konfirmasi Password</label>
                                     <input id="password-confirm" type="password" class="form-control" name="password_confirmation" required tabindex="3">
                                 </div>
 

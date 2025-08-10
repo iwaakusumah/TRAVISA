@@ -1,6 +1,6 @@
 @extends('layouts.app')
 
-@section('title', 'Login | Travisa')
+@section('title', 'Lupa Password | Travisa')
 @section('login')
 
 <div id="app">
@@ -11,11 +11,11 @@
 
                     <div class="card card-primary">
                         <div class="card-header">
-                            <h4>Forgot Password</h4>
+                            <h4>Lupa Password</h4>
                         </div>
 
                         <div class="card-body">
-                            <p class="text-muted">We will send a link to reset your password</p>
+                            <p class="text-muted">Masukkan alamat email yang terdaftar pada akun Anda. Kami akan mengirimkan link untuk mereset password Anda.</p>
                             <form method="POST" action="{{ route('password.email') }}">
                                 @csrf
                                 <div class="form-group">
