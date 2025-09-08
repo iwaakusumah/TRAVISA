@@ -26,10 +26,14 @@ Dibangun menggunakan **PHP Laravel 12**, sistem ini dilengkapi dengan antarmuka 
 ## 🧠 Metodologi
 
 ### 🔷 PROMETHEE
+<p style="text-align: justify;">
 Merupakan metode pendukung keputusan multi-kriteria yang membandingkan setiap alternatif secara pairwise berdasarkan nilai preferensi, menghasilkan nilai *leaving flow*, *entering flow*, dan *net flow*.
+</p>
 
 ### 🔶 Genetic Algorithm
+<p style="text-align: justify;">
 Digunakan untuk mengoptimalkan bobot dari setiap kriteria secara otomatis berdasarkan *fitness function* yang dirancang sesuai kebutuhan sistem, agar hasil pemeringkatan PROMETHEE menjadi lebih optimal dan adaptif.
+</p>
 
 ---
 
