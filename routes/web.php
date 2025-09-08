@@ -1,8 +1,10 @@
 <?php
 
 use App\Http\Controllers\CalculationController;
+use App\Http\Controllers\ClassController;
 use App\Http\Controllers\CriteriaController;
 use App\Http\Controllers\DashboardController;
+use App\Http\Controllers\PeriodController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\ResultController;
 use App\Http\Controllers\ScoreController;
@@ -10,18 +12,15 @@ use App\Http\Controllers\StudentController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\WeightController;
 use Illuminate\Support\Facades\Route;
-use SebastianBergmann\CodeCoverage\Report\Html\Dashboard;
 
+// Route untuk pengunjung
 Route::middleware(['guest'])->group(function () {
     Route::get('/', function () {
         return view('auth.login');
     })->name('welcome');
 });
 
-// Route::get('/dashboard', function () {
-//     return view('dashboard');
-// })->middleware(['auth', 'verified'])->name('dashboard');
-
+// Route untuk kepala sekolah
 Route::middleware(['auth', 'role:headmaster'])
     ->prefix('headmaster')
     ->as('headmaster.')
@@ -35,6 +34,7 @@ Route::middleware(['auth', 'role:headmaster'])
         Route::get('result/export-pdf', [ResultController::class, 'exportPdf'])->name('results.export-pdf');
     });
 
+// Route untuk wali kelas
 Route::middleware(['auth', 'role:homeroom_teacher'])
     ->prefix('homeroom-teacher')
     ->as('homeroom-teacher.')
@@ -46,6 +46,7 @@ Route::middleware(['auth', 'role:homeroom_teacher'])
         Route::resource('scores', ScoreController::class)->except(['edit', 'update']);
     });
 
+// Route untuk wakil kesiswaan
 Route::middleware(['auth', 'role:staff_student'])
     ->prefix('staff-student')
     ->as('staff-student.')
@@ -66,6 +67,7 @@ Route::middleware(['auth', 'role:staff_student'])
         Route::get('result/export-pdf', [ResultController::class, 'exportPdf'])->name('results.export-pdf');
     });
 
+// Route untuk role administrasi atau tata usaha
 Route::middleware(['auth', 'role:administration'])
     ->prefix('administration')
     ->as('administration.')
@@ -73,6 +75,8 @@ Route::middleware(['auth', 'role:administration'])
         Route::get('/', [DashboardController::class, 'administrationDashboard'])->name('dashboard');
         Route::resource('users', UserController::class);
         Route::resource('students', StudentController::class);
+        Route::resource('periods', PeriodController::class);
+        Route::resource('classes', ClassController::class);
     });
 
 Route::middleware('auth')->group(function () {

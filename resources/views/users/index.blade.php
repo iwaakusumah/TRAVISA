@@ -46,7 +46,7 @@
                       <td class="text-center">{{ $index + 1 }}</td>
                       <td>{{ $user->name }}</td>
                       <td>{{ $user->email }}</td>
-                      <td>{{ $user->role }}</td>
+                      <td>{{ $user->role_label }}</td>
                       <td class="text-center">{{ $user->schoolClass->name ?? '-' }}</td>
                       <td class="text-center">
                         <a href="{{ route('administration.users.edit', $user->id) }}" class="btn btn-warning btn-action mr-1" data-toggle="tooltip" title="Edit">

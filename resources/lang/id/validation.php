@@ -42,6 +42,7 @@ return [
     'string' => 'Kolom :attribute harus berupa string.',
     'unique' => 'Nilai :attribute sudah digunakan.',
     'url' => 'Format :attribute tidak valid.',
+    'regex'    => 'Format tahun periode harus seperti 2025/2026.',
 
     'custom' => [
         'scores.*' => [

@@ -1,16 +1,42 @@
 <div class="main-sidebar sidebar-style-2">
     <aside id="sidebar-wrapper">
+        @php
+        $user = Auth::user();
+        @endphp
+
+        @if ($user->role === 'homeroom_teacher')
         <div class="sidebar-brand">
-            <a href="index.html">TRAVISA</a>
+            <a href="{{ route('homeroom-teacher.dashboard') }}">TRAVISA</a>
         </div>
         <div class="sidebar-brand sidebar-brand-sm">
-            <a href="index.html">TS</a>
+            <a href="{{ route('homeroom-teacher.dashboard') }}">TS</a>
         </div>
+        @elseif ($user->role === 'administration')
+        <div class="sidebar-brand">
+            <a href="{{ route('administration.dashboard') }}">TRAVISA</a>
+        </div>
+        <div class="sidebar-brand sidebar-brand-sm">
+            <a href="{{ route('administration.dashboard') }}">TS</a>
+        </div>
+        @elseif ($user->role === 'staff_student')
+        <div class="sidebar-brand">
+            <a href="{{ route('staff-student.dashboard') }}">TRAVISA</a>
+        </div>
+        <div class="sidebar-brand sidebar-brand-sm">
+            <a href="{{ route('staff-student.dashboard') }}">TS</a>
+        </div>
+        @elseif ($user->role === 'headmaster')
+        <div class="sidebar-brand">
+            <a href="{{ route('headmaster.dashboard') }}">TRAVISA</a>
+        </div>
+        <div class="sidebar-brand sidebar-brand-sm">
+            <a href="{{ route('headmaster.dashboard') }}">TS</a>
+        </div>
+        
+        @endif
+        
         <ul class="sidebar-menu">
             <li class="menu-header">Dashboard</li>
-            @php
-            $user = Auth::user();
-            @endphp
 
             @if ($user->role === 'homeroom_teacher')
             <li class="{{ Route::is('homeroom-teacher.dashboard') ? 'active' : '' }}">
@@ -61,7 +87,7 @@
             </li>
             @endif
             @endif
-            
+
             @if (auth()->user()->role === 'administration')
             <li class="menu-header">Data Pengguna</li>
             <li class="{{ Route::is('administration.users.index') ? 'active' : '' }}"><a class="nav-link" href="{{ route('administration.users.index') }}"><i class="fas fa-users"></i> <span>Data Pengguna</span></a></li>
@@ -86,6 +112,11 @@
         </ul>
         @endif
         @endif
+
+        @if (auth()->user()->role === 'administration')
+            <li class="menu-header">Data Pendukung</li>
+            <li class="{{ Route::is('administration.periods.index') ? 'active' : '' }}"><a class="nav-link" href="{{ route('administration.periods.index') }}"><i class="fas fa-calendar-alt"></i> <span>Data Periode</span></a></li>
+            @endif
 
     </aside>
 </div>

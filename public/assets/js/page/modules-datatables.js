@@ -39,7 +39,9 @@ $("[data-checkboxes]").each(function () {
 });
 
 $("#table-all").dataTable();
-
+$("#table-3").dataTable({
+    columnDefs: [{ sortable: false, targets: [2] }],
+});
 $("#table-4").dataTable({
     columnDefs: [{ sortable: false, targets: [3] }],
 });
