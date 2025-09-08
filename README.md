@@ -1,64 +1,64 @@
-# 🎓 Sistem Informasi Pendukung Keputusan Seleksi Penerima Beasiswa
+# 🎓 Decision Support Information System for Scholarship Recipient Selection
 
 <p style="text-align: justify;">
-Sistem ini merupakan aplikasi berbasis web yang digunakan untuk membantu proses seleksi penerima beasiswa secara objektif menggunakan pendekatan **Hybrid PROMETHEE dan Genetic Algorithm (GA)**.
+This system is a web-based application designed to assist the scholarship recipient selection process objectively using a <strong>Hybrid PROMETHEE and Genetic Algorithm (GA)</strong> approach.
 </p>
 
 <p style="text-align: justify;">
-Dibangun menggunakan **PHP Laravel 12**, sistem ini dilengkapi dengan antarmuka berbasis **Blade Template + Bootstrap 4**, serta dilengkapi autentikasi menggunakan **Laravel Breeze**.
+Built with <strong>PHP Laravel 12</strong>, the system features an interface based on <strong>Blade Template + Bootstrap 4</strong> and includes authentication using <strong>Laravel Breeze</strong>.
 </p>
 
 ---
 
 ## 🧰 Tech Stack
 
-|    Komponen    |             Teknologi             |
-|----------------|-----------------------------------|
-| Backend        | Laravel 12 (PHP 8.2+)             |
-| Frontend       | Blade, Bootstrap 4                |
-| Autentikasi    | Laravel Breeze                    |
-| Database       | MySQL                             |
-| Algorithm      | Genetic Algorithm (GA)            |
-| Method         | PROMETHEE                         |
+|     Component    |            Technology            |
+|------------------|----------------------------------|
+| Backend          | Laravel 12 (PHP 8.2+)            |
+| Frontend         | Blade, Bootstrap 4               |
+| Authentication   | Laravel Breeze                   |
+| Database         | MySQL                            |
+| Algorithm        | Genetic Algorithm (GA)           |
+| Decision Method  | PROMETHEE                        |
 
 ---
 
-## 🧠 Metodologi
+## 🧠 Methodology
 
 ### 🔷 PROMETHEE
 <p style="text-align: justify;">
-Merupakan metode pendukung keputusan multi-kriteria yang membandingkan setiap alternatif secara pairwise berdasarkan nilai preferensi, menghasilkan nilai *leaving flow*, *entering flow*, dan *net flow*.
+A Multi-Criteria Decision Making (MCDM) method that compares alternatives pairwise based on preference values, producing <em>leaving flow</em>, <em>entering flow</em>, and <em>net flow</em> scores for final ranking.
 </p>
 
 ### 🔶 Genetic Algorithm
 <p style="text-align: justify;">
-Digunakan untuk mengoptimalkan bobot dari setiap kriteria secara otomatis berdasarkan *fitness function* yang dirancang sesuai kebutuhan sistem, agar hasil pemeringkatan PROMETHEE menjadi lebih optimal dan adaptif.
+Used to automatically optimize the weight of each criterion based on a <em>fitness function</em> tailored to the system's objectives, enabling the PROMETHEE ranking to be more adaptive and accurate.
 </p>
 
 ---
 
-## ✨ Fitur Utama
+## ✨ Key Features
 
-- ✅ Autentikasi pengguna (Login & Register via Laravel Breeze)
-- ✅ Manajemen data siswa penerima beasiswa
-- ✅ Manajemen kriteria
-- ✅ Penghitungan PROMETHEE (Leaving, Entering, Net Flow)
-- ✅ Generate bobot kriteria dengan Genetic Algorithm
-- ✅ Pemeringkatan otomatis penerima beasiswa
-- ✅ Riwayat dan pencatatan hasil seleksi
-- ✅ Export hasil seleksi dalam bentuk pdf
+- ✅ User authentication (Login & Register via Laravel Breeze)
+- ✅ Scholarship recipient data management
+- ✅ Criteria and sub-criteria management
+- ✅ PROMETHEE calculation (Leaving, Entering, Net Flow)
+- ✅ Automatic weight optimization using Genetic Algorithm
+- ✅ Final ranking of scholarship candidates
+- ✅ Selection history and logs
+- ✅ Export selection results as PDF
 
 ---
 
-## 🛠️ Instalasi & Setup
+## 🛠️ Installation & Setup
 
-### 1. Clone Repository
+### 1. Clone the Repository
 ```bash
-git clone https://github.com/username/nama-proyek.git
-cd nama-proyek
+git clone https://github.com/username/project-name.git
+cd project-name
 ```
 
-### 2. Install Dependency
+### 2. Install Dependencies
 ```bash
 composer install
 npm install
@@ -70,19 +70,19 @@ cp .env.example .env
 php artisan key:generate
 ```
 
-### Edit file .env untuk menyesuaikan konfigurasi database:
+### Edit the .env file to match your database configuration:
 ```bash
 DB_DATABASE=beasiswa_db
 DB_USERNAME=root
 DB_PASSWORD=
 ```
 
-### 4. Jalankan Migrasi
+### 4. Run Database Migrations
 ```bash
 php artisan migrate
 ```
 
-### 5. Setup Autentikasi Laravel Breeze
+### 5. Setup Laravel Breeze Authentication
 ```bash
 composer require laravel/breeze --dev
 php artisan breeze:install blade
@@ -95,7 +95,7 @@ php artisan migrate
 php artisan serve
 ```
 
-## 📄 Lisensi
+## 📄 License
 <p style="text-align: justify;">
 The Laravel framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
 </p>
