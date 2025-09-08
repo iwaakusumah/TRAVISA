@@ -1,8 +1,10 @@
 # 🎓 Sistem Informasi Pendukung Keputusan Seleksi Penerima Beasiswa
 
+<p style="text-align: justify;">
 Sistem ini merupakan aplikasi berbasis web yang digunakan untuk membantu proses seleksi penerima beasiswa secara objektif menggunakan pendekatan **Hybrid PROMETHEE dan Genetic Algorithm (GA)**.
 
 Dibangun menggunakan **PHP Laravel 12**, sistem ini dilengkapi dengan antarmuka berbasis **Blade Template + Bootstrap 4**, serta dilengkapi autentikasi menggunakan **Laravel Breeze**.
+</p>
 
 ---
 
