@@ -54,8 +54,8 @@ Used to automatically optimize the weight of each criterion based on a <em>fitne
 
 ### 1. Clone the Repository
 ```bash
-git clone https://github.com/username/project-name.git
-cd project-name
+git clone https://github.com/iwaakusumah/TRAVISA.git
+cd TRAVISA
 ```
 
 ### 2. Install Dependencies
