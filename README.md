@@ -41,7 +41,7 @@ Used to automatically optimize the weight of each criterion based on a <em>fitne
 
 - ✅ User authentication (Login & Register via Laravel Breeze)
 - ✅ Scholarship recipient data management
-- ✅ Criteria and sub-criteria management
+- ✅ Criteria management
 - ✅ PROMETHEE calculation (Leaving, Entering, Net Flow)
 - ✅ Automatic weight optimization using Genetic Algorithm
 - ✅ Final ranking of scholarship candidates
