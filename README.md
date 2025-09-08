@@ -48,20 +48,24 @@ Digunakan untuk mengoptimalkan bobot dari setiap kriteria secara otomatis berdas
 ```bash
 git clone https://github.com/username/nama-proyek.git
 cd nama-proyek
+```
 
 ### 2. Install Dependency
 ```bash
 composer install
 npm install
+```
 
 ### 3. Setup Environment
 ```bash
 cp .env.example .env
 php artisan key:generate
+```
 
 ### 4. Jalankan Migrasi
 ```bash
 php artisan migrate
+```
 
 ### 5. Setup Autentikasi Laravel Breeze
 ```bash
@@ -69,6 +73,7 @@ composer require laravel/breeze --dev
 php artisan breeze:install blade
 npm install && npm run dev
 php artisan migrate
+```
 
 ### 6. Run the Application
 ```bash
