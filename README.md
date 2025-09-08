@@ -8,7 +8,6 @@ Dibangun menggunakan **PHP Laravel 12**, sistem ini dilengkapi dengan antarmuka 
 
 ## 🧰 Tech Stack
 
-|----------------------------------------------------|
 |    Komponen    |             Teknologi             |
 |----------------|-----------------------------------|
 | Backend        | Laravel 12 (PHP 8.2+)             |
@@ -17,7 +16,6 @@ Dibangun menggunakan **PHP Laravel 12**, sistem ini dilengkapi dengan antarmuka 
 | Database       | MySQL                             |
 | Algorithm      | Genetic Algorithm (GA)            |
 | Method         | PROMETHEE                         |
-|_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ |
 
 ---
 
