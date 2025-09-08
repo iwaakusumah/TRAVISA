@@ -70,6 +70,13 @@ cp .env.example .env
 php artisan key:generate
 ```
 
+### Edit file .env untuk menyesuaikan konfigurasi database:
+```bash
+DB_DATABASE=beasiswa_db
+DB_USERNAME=root
+DB_PASSWORD=
+```
+
 ### 4. Jalankan Migrasi
 ```bash
 php artisan migrate
@@ -86,3 +93,9 @@ php artisan migrate
 ### 6. Run the Application
 ```bash
 php artisan serve
+```
+
+## 📄 Lisensi
+<p style="text-align: justify;">
+The Laravel framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
+</p>
