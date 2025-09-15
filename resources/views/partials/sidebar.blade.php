@@ -116,6 +116,7 @@
         @if (auth()->user()->role === 'administration')
             <li class="menu-header">Data Pendukung</li>
             <li class="{{ Route::is('administration.periods.index') ? 'active' : '' }}"><a class="nav-link" href="{{ route('administration.periods.index') }}"><i class="fas fa-calendar-alt"></i> <span>Data Periode</span></a></li>
+            <li class="{{ Route::is('administration.classes.index') ? 'active' : '' }}"><a class="nav-link" href="{{ route('administration.classes.index') }}"><i class="fas fa-school"></i> <span>Data Kelas</span></a></li>
             @endif
 
     </aside>

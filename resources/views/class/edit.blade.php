@@ -20,14 +20,14 @@
             <div class="row">
                 <div class="card col-12">
                     <div class="card-body">
-                        <form action="{{ route('administration.classes.update', $period->id) }}" method="POST">
+                        <form action="{{ route('administration.classes.update', $class->id) }}" method="POST">
                             @csrf
                             @method('PUT')
                             <div class="form-row">
                                 <div class="form-group col-md-12">
                                     <label for="name">Nama Kelas</label>
                                     <input type="text" class="form-control" id="name" name="name" placeholder="Nama Kelas"
-                                        value="{{ old('name', $period->name ?? '') }}" required>
+                                        value="{{ old('name', $class->name ?? '') }}" required>
                                     @error('name') <small class="text-danger">{{ $message }}</small> @enderror
                                 </div>
                             </div>

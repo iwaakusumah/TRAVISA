@@ -26,7 +26,7 @@ class ClassController extends Controller
                 'string',
                 'max:255',
                 'unique:classes,name',
-                'regex:/^(X|XI|XII)\sTKJ\s[1-9]$/'
+                'regex:/^(X|XI|XII)\s[A-Z]{2,5}\s[1-9]$/'
             ],
         ]);
 
@@ -47,7 +47,7 @@ class ClassController extends Controller
                 'string',
                 'max:255',
                 'unique:classes,name',
-                'regex:/^(X|XI|XII)\sTKJ\s[1-9]$/'
+                'regex:/^(X|XI|XII)\s[A-Z]{2,5}\s[1-9]$/'
             ],
         ]);
 
